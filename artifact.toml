@@ -1,32 +1,27 @@
-kind = "api"
-previewPath = "/api" # TODO - should be excluded from preview in the first place
-title = "API Server"
+kind = "mobile"
+previewPath = "/"
+title = "DevMobile - IDE no Celular"
 version = "1.0.0"
-id = "3B4_FFSkEVBkAeYMFRJ2e"
+id = "artifacts/mobile"
+router = "expo-domain"
+
+[[integratedSkills]]
+name = "expo"
+version = "1.0.0"
 
 [[services]]
-localPort = 8080
-name = "API Server"
-paths = ["/api"]
+ensurePreviewReachable = "/status"
+name = "expo"
+paths = [ "/" ]
+localPort = 18115
 
 [services.development]
-run = "pnpm --filter @workspace/api-server run dev"
+run = "pnpm --filter @workspace/mobile run dev"
 
 [services.production]
+build = [ "pnpm", "--filter", "@workspace/mobile", "run", "build" ]
+run = [ "pnpm", "--filter", "@workspace/mobile", "run", "serve" ]
 
-[services.production.build]
-args = ["pnpm", "--filter", "@workspace/api-server", "run", "build"]
-
-[services.production.build.env]
-NODE_ENV = "production"
-
-[services.production.run]
-# we don't run through pnpm to make startup faster in production
-args = ["node", "--enable-source-maps", "artifacts/api-server/dist/index.mjs"]
-
-[services.production.run.env]
-PORT = "8080"
-NODE_ENV = "production"
-
-[services.production.health.startup]
-path = "/api/healthz"
+[services.env]
+PORT = "18115"
+BASE_PATH = "/"
